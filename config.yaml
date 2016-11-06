@@ -1,0 +1,23 @@
+services:
+    slack: 
+        token: slack-auth-token
+    quip:
+        token: quip-auth-token
+        document: target-document-id
+
+admins:
+    - john:
+        first: John
+        last: Doe
+        email: john.doe@email.com
+    - jane:
+        first: Jane
+        last: Smith
+        email: jane.smith@email.com
+
+mailer:
+    server: smtp.gmail.com:587
+    templates: 
+        plain: email.plain.tmpl
+        html: email.html.tmpl
+    subject: Welcome to the MENA Devs Slack group
