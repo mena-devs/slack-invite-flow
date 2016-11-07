@@ -83,5 +83,4 @@ and within the configuration file itself.
 - the system is missing quite a bit of tests
 - the system focuses on a CLI entry point, this doesn't have to be the case
 - there are some `TODO` that needs handling (find them!)
-- provide a setup and a console script
 ...

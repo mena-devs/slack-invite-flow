@@ -17,7 +17,8 @@ def request_user_stdin(key):
         last=raw_input('[{}] last name: '.format(key)),
         email=raw_input('[{}] email: '.format(key)))
 
-if __name__ == '__main__':
+
+def main():
     workflow = flow.ActivityFlow(
         inviter=flow.ActivityConfig(
             kind=activities.InviteUserToSlackTeam, extend=False, repeat=1),
@@ -35,3 +36,6 @@ if __name__ == '__main__':
             to_user=request_user_stdin('who'),
             referring_user=request_user_stdin('referrer')),
         initial='inviter')  # initial is optional, left for demo purposes
+
+if __name__ == '__main__':
+    main()
