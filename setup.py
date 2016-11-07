@@ -11,13 +11,13 @@ setuptools.setup(
     description="Automates Mena Devs admin tasks",
     long_description=open('README.md').read(),
 
-    packages=setuptools.find_packages(),
-
     install_requires=[
         'Jinja2==2.8',
         'slackclient==1.0.2',
+        'PyYaml==3.12',
     ],
 
+    packages=['slack_invite_flow'],
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Programming Language :: Python',
