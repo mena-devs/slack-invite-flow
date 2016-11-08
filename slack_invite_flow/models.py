@@ -17,7 +17,7 @@ class User(object):
     def load(cls, flat):
         """Builds a user from a dictionary"""
         try:
-            short = flat.keys()[0]
+            short = list(flat.keys())[0]
             details = flat[short]
             return cls(
                 short=short,
