@@ -2,9 +2,13 @@
 
 import abc
 import collections
+import datetime
+
+import six
 
 
 ActivityConfig = collections.namedtuple('ActivityConfig', 'kind extend repeat')
+Log = collections.namedtuple('Log', 'when action error')
 
 
 class FailedActivity(Exception):
@@ -12,9 +16,9 @@ class FailedActivity(Exception):
     pass
 
 
+@six.add_metaclass(abc.ABCMeta)
 class Activity(object):
     """Base state class"""
-    __metaclass__ = abc.ABCMeta
 
     @abc.abstractmethod
     def execute(self, payload):
@@ -25,9 +29,15 @@ class Activity(object):
 class ActivityFlow(collections.OrderedDict):
     """Activity execution system"""
 
-    # TODO: Make this yield or spit out a log instead of printing
-    def play(self, payload, initial=None):
-        """Plays the activity configuration sequentially.
+    def log(self, action):
+        return Log(datetime.datetime.now(), action, '')
+
+    def error(self, action, error):
+        return Log(datetime.datetime.now(), action, error)
+
+    def play(self, payload=None, initial=None):
+        """Plays the activity configuration sequentially and incrementally
+        spits out a log of the actions happening.
 
         If an `initial` state is passed, the flow will ignore earlier
         activities
@@ -38,13 +48,13 @@ class ActivityFlow(collections.OrderedDict):
             Extend => Defines whether the flow continues on activity error
             Repeat => Defines how many times the activity repeats on error
         """
-        print('Flow: Starting')
+        yield self.log('starting')
         skipped = False
         for name, configuration in self.items():
 
             # The following block handles the ability to skip activities
             if initial and initial != name and not skipped:
-                print('Flow: Skipping {}'.format(name))
+                yield self.log('skipping {}'.format(name))
                 continue
             else:
                 skipped = True
@@ -56,17 +66,17 @@ class ActivityFlow(collections.OrderedDict):
             graceful = False
             for trial in range(configuration.repeat + 1):
                 try:
-                    print('Flow: Playing {}{}'.format(
-                        name, ' (REPEAT)' if repeat else ''))
+                    yield self.log('playing {}{}'.format(
+                        name, ' with repeat' if repeat else ''))
                     instance.execute(payload)
                     graceful = True
                     break
-                except Exception as e:
-                    print('Flow: ERROR -> {}'.format(e))
+                except Exception as e:  # TODO: Enforce only FailedState?
+                    yield self.error('error {}'.format(name), str(e))
                     repeat = True
 
             # The following block handles the ability to fallthrough on error
             if not graceful and not configuration.extend:
                 break
 
-        print('Flow: Complete')
+        yield self.log('flow complete')
