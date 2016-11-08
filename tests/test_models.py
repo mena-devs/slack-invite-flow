@@ -1,6 +1,6 @@
 import unittest
 
-import models
+from slack_invite_flow import models
 
 
 class MenaviteTests(unittest.TestCase):
