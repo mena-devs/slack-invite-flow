@@ -15,6 +15,7 @@ setuptools.setup(
         'Jinja2==2.8',
         'slackclient==1.0.2',
         'PyYaml==3.12',
+        'six==1.10.0',
     ],
 
     packages=['slack_invite_flow'],
