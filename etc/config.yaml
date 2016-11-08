@@ -18,6 +18,6 @@ admins:
 mailer:
     server: smtp.gmail.com:587
     templates: 
-        plain: email.plain.tmpl
-        html: email.html.tmpl
+        plain: etc/email.plain.tmpl
+        html: etc/email.html.tmpl
     subject: Welcome to the MENA Devs Slack group
