@@ -36,8 +36,7 @@ class ActivityFlow(collections.OrderedDict):
         return Log(datetime.datetime.now(), action, error)
 
     def play(self, payload=None, initial=None):
-        """Plays the activity configuration sequentially and incrementally
-        spits out a log of the actions happening.
+        """Plays the activity configuration sequentially
 
         If an `initial` state is passed, the flow will ignore earlier
         activities
@@ -47,6 +46,9 @@ class ActivityFlow(collections.OrderedDict):
             Kind => Defines the activity class that holds the execution logic
             Extend => Defines whether the flow continues on activity error
             Repeat => Defines how many times the activity repeats on error
+
+        This function will incrementally spits out a log of the
+        actions happening.
         """
         yield self.log('starting')
         skipped = False

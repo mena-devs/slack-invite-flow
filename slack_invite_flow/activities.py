@@ -1,6 +1,6 @@
 import datetime
-import email.mime.text
 import email.mime.multipart
+import email.mime.text
 import getpass
 import smtplib
 import xml
@@ -8,17 +8,17 @@ import xml
 import jinja2
 import slackclient
 
-import quip
 import flow
 import models
+import quip
 
 
 class SendCodeOfConductEmail(flow.Activity):
     """Menavite state that sends an email"""
 
     def execute(self, payload):
-        """
-        Payload:
+        """Payload:
+
             - config -> dict
             - to_user -> User
             - from_user -> str
@@ -89,8 +89,8 @@ class InviteUserToSlackTeam(flow.Activity):
     """Menavite state that invites to a slack team"""
 
     def execute(self, payload):
-        """
-        Payload:
+        """Payload:
+
             - config -> dict
             - to_user -> User
         """
@@ -127,8 +127,8 @@ class UpdateQuipMembersDocument(flow.Activity):
     """
 
     def execute(self, payload):
-        """
-        Payload:
+        """Payload:
+
             - config -> dict
             - to_user -> User
             - from_user -> str

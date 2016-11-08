@@ -4,7 +4,6 @@ Slack Invite Flow
 Rudimentary workflow to automate slack team invitations
 """
 import argparse
-import sys
 
 import yaml
 
@@ -40,7 +39,7 @@ def main():
         with open(args.config) as config_file:
             # TODO: Provide a _local_ web frontend.
             # See python module: webbrowser
-            print 'MENA Devs Slack Invite - Automation'
+            print('MENA Devs Slack Invite - Automation')
             player = workflow.play(
                 payload=dict(
                     config=yaml.load(config_file.read()),
