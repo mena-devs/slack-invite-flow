@@ -16,20 +16,10 @@ import quip
 class SendCodeOfConductEmail(flow.Activity):
     """Menavite state that sends an email"""
 
-    def execute(self, payload):
-        """Payload:
-
-            - config -> dict
-            - to_user -> User
-            - from_user -> str
-            - referring_user -> User
-            - admins -> UserManager
-        """
-        config = payload['config']
+    def execute(self, config, to_user, from_user, referring_user, **payload):
+        """Sends a Code of Conduct by mail"""
         admins = models.UserManager.load(config['admins'])
-        to_user = payload['to_user']
-        from_user = admins[payload['from_user']]
-        referring_user = payload['referring_user']
+        from_user = admins[from_user]
 
         with open(config['mailer']['templates']['plain']) as _file:
             plain = jinja2.Template(_file.read())
@@ -88,15 +78,9 @@ class SendCodeOfConductEmail(flow.Activity):
 class InviteUserToSlackTeam(flow.Activity):
     """Menavite state that invites to a slack team"""
 
-    def execute(self, payload):
-        """Payload:
-
-            - config -> dict
-            - to_user -> User
-        """
-        to_user = payload['to_user']
-
-        token = payload['config']['services']['slack']['token']
+    def execute(self, config, to_user, **payload):
+        """Invites a user to slack"""
+        token = config['services']['slack']['token']
         client = slackclient.SlackClient(token)
 
         result = client.api_call("users.admin.invite",
@@ -126,19 +110,10 @@ class UpdateQuipMembersDocument(flow.Activity):
     </tr>
     """
 
-    def execute(self, payload):
-        """Payload:
-
-            - config -> dict
-            - to_user -> User
-            - from_user -> str
-            - referring_user -> User
-        """
-        config = payload['config']
+    def execute(self, config, to_user, from_user, referring_user, **payload):
+        """Updates the quip members document"""
         admins = models.UserManager.load(config['admins'])
-        to_user = payload['to_user']
-        from_user = admins[payload['from_user']]
-        referring_user = payload['referring_user']
+        from_user = admins[from_user]
 
         token = config['services']['quip']['token']
         client = quip.QuipClient(access_token=token)

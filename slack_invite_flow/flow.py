@@ -21,7 +21,7 @@ class Activity(object):
     """Base state class"""
 
     @abc.abstractmethod
-    def execute(self, payload):
+    def execute(self, **payload):
         """abstract state execute function"""
         pass
 
@@ -70,7 +70,10 @@ class ActivityFlow(collections.OrderedDict):
                 try:
                     yield self.log('playing {}{}'.format(
                         name, ' with repeat' if repeat else ''))
-                    instance.execute(payload)
+                    if payload is not None:
+                        instance.execute(**payload)
+                    else:
+                        instance.execute(**{})
                     graceful = True
                     break
                 except Exception as e:  # TODO: Enforce only FailedState?

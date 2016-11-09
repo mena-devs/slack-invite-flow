@@ -15,7 +15,7 @@ def test_activity_must_abide_by_interface():
 def test_single_activity_flow():
     """Tests that a single activity runs successfully within a flow"""
     class FooActivity(flow.Activity):
-        def execute(self, payload):
+        def execute(self, **payload):
             pass
 
     workflow = flow.ActivityFlow([
@@ -34,7 +34,7 @@ def test_single_activity_flow():
 def test_single_activity_fail_with_no_repeat_flow():
     """Tests that a single failed activity will not be repeated on failure"""
     class FooActivity(flow.Activity):
-        def execute(self, payload):
+        def execute(self, **payload):
             raise Exception('fail!')
 
     workflow = flow.ActivityFlow([
@@ -54,7 +54,7 @@ def test_single_activity_fail_with_no_repeat_flow():
 def test_single_activity_fail_with_repeat_flow():
     """Tests that a single activity will be repeated on failure"""
     class FooActivity(flow.Activity):
-        def execute(self, payload):
+        def execute(self, **payload):
             raise Exception('fail!')
 
     workflow = flow.ActivityFlow([
@@ -78,11 +78,11 @@ def test_single_activity_fail_with_repeat_flow():
 def test_multiple_activities_flow():
     """Tests that multiple activities can complete successfully"""
     class FooActivity(flow.Activity):
-        def execute(self, payload):
+        def execute(self, **payload):
             pass
 
     class BarActivity(flow.Activity):
-        def execute(self, payload):
+        def execute(self, **payload):
             pass
 
     workflow = flow.ActivityFlow([
@@ -103,11 +103,11 @@ def test_multiple_activities_flow():
 def test_multiple_activities_skip_flow():
     """Tests that skipping activities is possible"""
     class FooActivity(flow.Activity):
-        def execute(self, payload):
+        def execute(self, **payload):
             pass
 
     class BarActivity(flow.Activity):
-        def execute(self, payload):
+        def execute(self, **payload):
             pass
 
     workflow = flow.ActivityFlow([
@@ -129,11 +129,11 @@ def test_multiple_activities_no_fallthrough_flow():
     """Tests that activities will not fallthrough on failure if not explicitly
     set within the configuration"""
     class FooActivity(flow.Activity):
-        def execute(self, payload):
+        def execute(self, **payload):
             raise Exception('fail!')
 
     class BarActivity(flow.Activity):
-        def execute(self, payload):
+        def execute(self, **payload):
             pass
 
     workflow = flow.ActivityFlow([
@@ -154,11 +154,11 @@ def test_multiple_activities_no_fallthrough_flow():
 def test_multiple_activities_with_fallthrough_flow():
     """Tests that activities can fallthrough on failure if explicitly set"""
     class FooActivity(flow.Activity):
-        def execute(self, payload):
+        def execute(self, **payload):
             raise Exception('fail!')
 
     class BarActivity(flow.Activity):
-        def execute(self, payload):
+        def execute(self, **payload):
             pass
 
     workflow = flow.ActivityFlow([
